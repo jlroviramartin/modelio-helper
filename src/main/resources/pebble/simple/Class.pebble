@@ -1,0 +1,71 @@
+{%  import "./Common.pebble" %}
+package {{ class.fullNamespace }};
+
+{{ Class(class) }}
+
+{#
+ # This macro prints a class.
+ #}
+{%  macro Class(class) %}
+{{ Documentation(class) }}
+{{ Modifiers(class) }} class {{ class.name }}{{ TemplateArguments(class) }}{{ ExtendsAndImplements(class) }} {
+{%      for p in class.properties %}
+
+    {{ Class_PropertyField(p) | indent(1) }}
+{%      endfor %}
+{%      for p in class.properties %}
+
+    {{ Class_PropertyAccessor(p) | indent(1) }}
+{%      endfor %}
+{%      for m in class.methods %}
+
+    {{ Class_Method(m) | indent(1) }}
+{%      endfor %}
+{%      for ns in class.ownedNamespaces %}
+
+    {{ ClassOrInterface(ns) | indent(1) }}
+{%      endfor %}
+/*
+{{ Dependencies(class) }}
+ */
+}
+{%  endmacro %}
+{#
+ # This macro prints the property as a field.
+ #}
+{%  macro Class_PropertyField(property) %}
+private {{ property.type.fullName }} {{ property.name }};
+{%  endmacro %}
+{#
+ # This macro prints the property as a getters and a setters.
+ #}
+{%  macro Class_PropertyAccessor(property) %}
+
+{{ GetterDocumentation(property) }}
+{{ Modifiers(property) }} {{ property.type.fullName }} get{{ property.name | capitalize }}() {
+    return {{ property.name }};
+}
+
+{{ SetterDocumentation(property) }}
+{{ Modifiers(property) }} void set{{ property.name | capitalize}}({{ property.type.fullName }} value) {
+    {{ property.name }} = value;
+}
+{%  endmacro %}
+{#
+ # This macro prints the method.
+ #}
+{%  macro Class_Method(method) %}
+{{ Documentation(method) }}
+/* {{ Stereotypes(method) }} */
+{%      if method.constructor %}
+{{ Modifiers(method) }} {{ method.declaringClass.name }}({{ MethodArguments(method) }}) {
+}
+{%      elseif method.destructor %}
+~{{ method.declaringClass.name }}() {
+}
+{%      else %}
+{{ Modifiers(method) }} {{ TemplateArguments(method) }} {{ method.return.type.fullName }} {{ method.name }}({{ MethodArguments(method) }}) {
+    // <...>
+}
+{%      endif %}
+{%  endmacro %}

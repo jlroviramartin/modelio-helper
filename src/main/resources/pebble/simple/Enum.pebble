@@ -1,0 +1,33 @@
+{%  import "./Class.pebble" %}
+{%  import "./Common.pebble" %}
+package {{ enum.fullNamespace }};
+
+{{ Enum(enum) }}
+
+{#
+ # This macro prints an enum.
+ #}
+{%  macro Enum(enum) %}
+{{ Documentation(enum) }}
+{{ Modifiers(enum) }} enum {{ enum.name }}{{ Implements(enum) }} {
+{%      for p in enum.properties %}
+{%          if p.enumValue %}
+
+    {{ Enum_EnumValue(p) | indent(1) }}
+{%              if loop.last %};
+{%              else %},
+{%              endif %}
+{%          endif %}
+{%      endfor %}
+{%      for m in enum.methods %}
+
+    {{ Class_Method(m) | indent(1) }}
+{%      endfor %}
+}
+{%  endmacro %}
+{#
+ # This macro prints the property as a field.
+ #}
+{%  macro Enum_EnumValue(value) %}
+{{ value.name }}
+{%  endmacro %}

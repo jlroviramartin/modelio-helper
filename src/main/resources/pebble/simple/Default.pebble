@@ -1,0 +1,7 @@
+{% if (entity.isClass()) %}
+{%     include "./Class.pebble" with { "class" : entity } %}
+{% elseif (entity.isInterface()) %}
+{%     include "./Interface.pebble" with { "interface" : entity } %}
+{% elseif (entity.isEnum()) %}
+{%     include "./Enum.pebble" with { "enum" : entity } %}
+{% endif %}

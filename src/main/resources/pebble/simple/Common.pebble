@@ -1,0 +1,131 @@
+{#
+ # This macro prints the modifiers of a class, interface, method...
+ #}
+{% macro Modifiers(class) %}
+{%     if class.isPublic %}public
+{%-    elseif class.isProtected %}protected
+{%-    elseif class.isPrivate %}private
+{%-    else %}public
+{%-    endif %}
+{%     if class.static %} static
+{%-    elseif class.abstract %} abstract
+{%-    elseif class.final %} final
+{%-    endif %}
+{% endmacro %}
+
+{#
+ # This macro prints the 'extends' and 'implements' part of an class/interface.
+ #}
+{% macro ExtendsAndImplements(class) %}
+{%     if not class.extends is empty %} extends {{ class.extends.fullName }}
+{%-    endif %}
+{{ Implements(class) }}
+{% endmacro %}
+
+{#
+ # This macro prints the 'implements' part of an class/interface.
+ #}
+{% macro Implements(class) %}
+{%     if not class.implements is empty %} implements
+{%-        for c in class.implements %}
+{%             if not loop.first %},{% endif %} {{ c.fullName }}
+{%-        endfor %}
+{%     endif %}
+{% endmacro %}
+
+{% macro TemplateArguments(entity) %}
+{%     if (not entity.templateArguments is empty) %}
+<
+{%-        for c in entity.templateArguments %}
+{%             if not loop.first %}, {% endif %}{{ c.fullName }}
+{%-        endfor %}
+>
+{%-    endif %}
+{% endmacro %}
+
+{#
+ # This macro prints a class or an interface.
+ #}
+{% macro ClassOrInterface(entity) %}
+{%     if entity.isClass() %}
+{%         import "./Class.pebble" %}
+{{ Class(entity) }}
+{%     elseif entity.isInterface() %}
+{%         import "./Interface.pebble" %}
+{{ Interface(entity) }}
+{%     elseif entity.isEnum() %}
+{%         import "./Enum.pebble" %}
+{{ Enum(entity) }}
+{%     endif %}
+{% endmacro %}
+
+{#
+ # This macro prints the documentation of an entity.
+ #}
+{% macro Documentation(entity) %}
+/**
+ {{ DocumentationLines(entity) | nl | indent(1, mul = 1) }}
+ */
+{% endmacro %}
+
+{#
+ # This macro prints the documentation of a getter accesor.
+ #}
+{% macro GetterDocumentation(entity) %}
+/**
+ * Getter for property {@code {{ entity.name }}}.
+ {{ DocumentationLines(entity) | nl | indent(1, mul = 1) }}
+ * @return Value of {@code {{ entity.name }}}.
+ */
+{% endmacro %}
+
+{#
+ # This macro prints the documentation of a setter accesor.
+ #}
+{% macro SetterDocumentation(entity) %}
+/**
+ * Setter for property {@code {{ entity.name }}}.
+ {{ DocumentationLines(entity) | nl | indent(1, mul = 1) }}
+ * @param value New value of {@code {{ entity.name }}}.
+ */
+{% endmacro %}
+
+{#
+ # This macro prints the documentation of an entity using the '*' character.
+ # It is a common method between Documentation, GetterDocumentation and
+ # SetterDocumentation.
+ #}
+{% macro DocumentationLines(entity) %}
+{%     for line in entity.documentationLines %}* {{ line }}%n{% endfor %}
+{% endmacro %}
+
+{#
+ # This macro prints the method arguments as a comma separated list.
+ #}
+{% macro MethodArguments(method) %}
+{%-    for par in method.parameters %}
+{%-        if not loop.first %}, {% endif %}{{ par.type.fullName }} {{ par.name }}
+{%-    endfor %}
+{% endmacro %}
+
+{#
+ # This macro prints the stereotypes.
+ #}
+{% macro Stereotypes(entity) %}
+{%     if (not entity.stereotypes is empty) %}
+{%         for e in entity.stereotypes %}
+{{ e.fullName }}
+{%         endfor %}
+{%     endif %}
+{% endmacro %}
+
+{% macro Dependencies(entity) %}
+{%     if (not entity.dependencies is empty) %}
+{%         for d in entity.dependencies %}
+Stereotypes:
+    {{ Stereotypes(d) | indent(1) }}
+
+Source: {{ d.source.fullName }} - DependsOn: {{ d.dependsOn.fullName }}
+{%         endfor %}
+{%     endif %}
+{% endmacro %}

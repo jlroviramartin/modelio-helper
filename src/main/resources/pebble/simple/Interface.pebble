@@ -1,0 +1,44 @@
+{%  import "./Common.pebble" %}
+package {{ interface.fullNamespace }};
+
+{{ Interface(interface) }}}
+
+{#
+ # This macro prints an interface.
+ #}
+{%  macro Interface(interface) %}
+{{ Documentation(interface) }}
+{{ Modifiers(interface) }} interface {{ interface.name }}{{ TemplateArguments(interface) }}{{ Implements(interface) }} {
+{%      for p in class.properties %}
+
+    {{ Interface_PropertyAccessor(p) | indent(1) }}
+{%      endfor %}
+{%      for m in class.methods %}
+
+    {{ Interface_Method(m) | indent(1) }}
+{%      endfor %}
+{%      for ns in interface.ownedNamespaces %}
+
+    {{ ClassOrInterface(ns) | indent(1) }}
+{%      endfor %}
+}
+{%  endmacro %}
+{#
+ # This macro prints the property as a getters and a setters.
+ #}
+{%  macro Interface_PropertyAccessor(property) %}
+
+{{ GetterDocumentation(property) }}
+{{ property.type.fullName }} get{{ property.name | capitalize }}();
+
+{{ SetterDocumentation(property) }}
+void set{{ property.name | capitalize }}({{ property.type.fullName }} value);
+{%  endmacro %}
+{#
+ # This macro prints the method.
+ #}
+{%  macro Interface_Method(method) %}
+
+{{ Documentation(method) }}
+{{ TemplateArguments(method) }} {{ method.return.type.fullName }} {{ method.name }}({{ MethodArguments(method) }});
+{%  endmacro %}

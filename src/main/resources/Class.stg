@@ -1,0 +1,126 @@
+delimiters "$", "$"
+
+Class(class) ::= <<
+
+package $class.namespace$;
+
+$Documentation(class)$
+$Modifiers(class)$ class $class.name$$ExtendsAndImplements(class)$  {
+
+    $class.properties : { p |$(p.templateForField)(p)$}$
+
+    $class.properties : { p |$(p.templateForAccessors)(p)$}$
+
+    $class.methods : { m |$(m.template)(m)$}$
+}
+
+>>
+
+Interface(interface) ::= <<
+
+package $interface.namespace$;
+
+$Documentation(interface)$
+$Modifiers(interface)$ interface $interface.name$$Implements(interface)$ {
+
+    $interface.properties : { p |$PropertyAccessorsForInterface(p)$}$
+
+    $interface.methods : { m |$MethodForInterface(m)$}$
+}
+
+>>
+
+
+
+Modifiers(class) ::= <%
+$if( class.isPublic )$public
+$elseif( class.isProtected )$protected
+$elseif( class.isPrivate )$private
+$else$public
+$endif$
+$if( class.static )$ static
+$elseif( class.abstract )$ abstract
+$elseif( class.final )$ final
+$endif$
+%>
+
+ExtendsAndImplements(class) ::= <%
+$if( class.extends )$ extends $class.extends.fullName$
+$endif$
+$if( class.implements )$ implements $class.implements : { c |$c.fullName$}; separator=", "$
+$endif$
+%>
+
+Implements(class) ::= <%
+$if( class.implements )$ implements $class.implements : { c |$c.fullName$}; separator=", "$
+$endif$
+%>
+
+
+
+Class_PropertyField(property) ::= <<
+
+private $property.type.fullName$ $property.name; format="LowerFirst"$;
+>>
+
+Class_PropertyAccessors(property) ::= <<
+
+$GetterDocumentation(property)$
+$property.type.fullName$ get$property.name; format="UpperFirst"$() {
+    return $property.name; format="LowerFirst"$;
+}
+
+$SetterDocumentation(property)$
+void set$property.name; format="UpperFirst"$($property.type.fullName$ value) {
+    $property.name; format="LowerFirst"$ = value;
+}
+>>
+
+Class_Method(method) ::= <<
+
+$Documentation(method)$
+$Modifiers(method)$ $method.return.type.fullName$ $method.name; format="LowerFirst"$( $method.parameters : { par |$par.type.fullName$ $par.name$}; separator=", "$ ) {
+    <...>
+}
+>>
+
+
+
+Interface_PropertyAccessors(property) ::= <<
+
+$GetterDocumentation(property)$
+$property.type.fullName$ get$property.name; format="UpperFirst"$();
+
+$SetterDocumentation(property)$
+void set$property.name; format="UpperFirst"$($property.type.fullName$ value);
+>>
+
+Interface_Method(method) ::= <<
+
+$Documentation(method)$
+$Modifiers(method)$ $method.return.type.fullName$ $method.name; format="LowerFirst"$( $method.parameters : { par |$par.type.fullName$ $par.name$}; separator=", "$ );
+>>
+
+
+
+Documentation(entity) ::= <<
+/**
+ $entity.documentationLines : { line |* $line$}; separator="\n"$
+ */
+>>
+
+GetterDocumentation(entity) ::= <<
+/**
+ * Getter for property {@code $property.name; format="LowerFirst"$}.
+ $entity.documentationLines : { line |* $line$}; separator="\n"$
+ * @return Value of {@code $property.name; format="LowerFirst"$}.
+ */
+>>
+
+SetterDocumentation(entity) ::= <<
+/**
+ * Setter for property {@code $property.name; format="LowerFirst"$}.
+ $entity.documentationLines : { line |* $line$}; separator="\n"$
+ * @param value New value of {@code $property.name; format="LowerFirst"$}.
+ */
+>>

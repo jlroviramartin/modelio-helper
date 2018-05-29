@@ -1,0 +1,4 @@
+delimiters "$", "$"
+Test() ::= <<
+Hello world!
+>>

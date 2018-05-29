@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Module id="${project.name}" class="org.essence.modeliohelper.impl.ModelioHelperModule" binaryversion="3.7.01" version="${project.version}" schema-level="2" uid="0cd4af4b-711a-4e36-9363-ae11ba7c0d48">
+    <ClassPath>
+        <PathEntry path="lib/${project.artifactId}-${project.version}.jar"/>
+        <PathEntry path="lib/stringtemplate-4.0.2.jar"/>
+        <PathEntry path="lib/jython-2.7.0.jar"/>
+        <PathEntry path="lib/ST4-4.0.8.jar"/>
+        <PathEntry path="lib/antlr-runtime-3.5.2.jar"/>
+        <PathEntry path="lib/pebble-extensions-1.0.6.jar"/>
+        <PathEntry path="lib/pebble-2.4.0.jar"/>
+        <PathEntry path="lib/guava-16.0.1.jar"/>
+        <PathEntry path="lib/coverity-escapers-1.1.jar"/>
+        <PathEntry path="lib/slf4j-api-1.7.21.jar"/>
+        <PathEntry path="lib/commons-beanutils-1.9.3.jar"/>
+        <PathEntry path="lib/commons-logging-1.2.jar"/>
+        <PathEntry path="lib/commons-collections-3.2.2.jar"/>
+        <PathEntry path="lib/commons-io-2.6.jar"/>
+    </ClassPath>
+    <Profiles/>
+    <Gui>
+        <Commands>
+            <Command id="SimpleCodeGenerationCommand" label="%SimpleCodeGenerationCommandLabel" tooltip="%SimpleCodeGenerationCommandTooltip" image="res/icons/HelloWorldCommand_16.png" group="" modify-model="false" group-image="">
+                <Scope metaclass="ModelTree"/>
+                <Handler class="org.essence.modeliohelper.command.SimpleCodeGenerationCommand"/>
+            </Command>
+            <Command id="CodeGenerationCommand" label="%CodeGenerationCommandLabel" tooltip="%CodeGenerationCommandTooltip" image="res/icons/HelloWorldCommand_16.png" group="" modify-model="false" group-image="">
+                <Scope metaclass="ModelTree"/>
+                <Handler class="org.essence.modeliohelper.command.CodeGenerationCommand"/>
+            </Command>
+        </Commands>
+        <Tools/>
+        <ContextualMenu>
+            <CommandRef refid="SimpleCodeGenerationCommand"/>
+            <CommandRef refid="CodeGenerationCommand"/>
+        </ContextualMenu>
+        <Diagrams/>
+        <Views/>
+    </Gui>
+    <Dependencies/>
+</Module>

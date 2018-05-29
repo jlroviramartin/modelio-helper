@@ -1,0 +1,3 @@
+delimiters "$", "$"
+
+Default(entity) ::= <<$(entity.template)(entity)$>>
