@@ -18,7 +18,6 @@
  */
 package org.essence.modeliohelper.command;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,7 +34,6 @@ import javax.script.ScriptEngineManager;
 import javax.script.SimpleScriptContext;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.essence.commons.MapBuilder;
-import org.essence.modeliohelper.core.ResourceUtils;
 import org.essence.modeliohelper.model.ModelPrinter;
 import org.modelio.api.module.IModule;
 import org.modelio.api.module.command.DefaultModuleCommandHandler;
@@ -43,8 +41,6 @@ import org.modelio.api.module.context.log.ILogService;
 import org.modelio.api.module.context.project.IProjectStructure;
 import org.modelio.metamodel.uml.statik.NameSpace;
 import org.modelio.vcore.smkernel.mapi.MObject;
-//import org.python.core.Py;
-//import org.python.core.PySystemState;
 
 /**
  * Implementation of the IModuleContextualCommand interface.
@@ -115,11 +111,11 @@ public class CodeGenerationCommand extends DefaultModuleCommandHandler {
             MessageDialog.openInformation(null, "Script not found", runPath.toString());
         } else {
 
-            try {
+            /*try {
                 ResourceUtils.copyContent("app\\astyle", new File("C:\\Temp\\astile"));
             } catch (Exception ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
-            }
+            }*/
 
             Map<String, Object> args = new MapBuilder<String, Object>()
                     .put("outputPath", outputPath.toString())

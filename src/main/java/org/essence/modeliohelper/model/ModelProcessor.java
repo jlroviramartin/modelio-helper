@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.essence.astyle.Astyle;
 import org.essence.modeliohelper.command.HPrinter;
-import org.essence.modeliohelper.core.Astyle;
 
 /**
  *
