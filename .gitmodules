@@ -1,0 +1,6 @@
+[submodule "astyle-java-wrapper"]
+	path = astyle-java-wrapper
+	url = https://github.com/jlroviramartin/astyle-java-wrapper.git
+[submodule "pebble-extensions"]
+	path = pebble-extensions
+	url = https://github.com/jlroviramartin/pebble-extensions.git
